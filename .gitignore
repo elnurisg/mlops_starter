@@ -1,1 +1,5 @@
+# virtual environment
 venv/
+
+# Dynamic-link library files
+__pycache__/

@@ -2,7 +2,7 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from src.models.logistic_regression import create_model
+from src.ml_package.models.logistic_regression import create_model
 
 def load_data():
     data = load_iris()
@@ -21,8 +21,12 @@ def evaluate_model(model, X_test, y_test):
     accuracy = accuracy_score(y_test, predictions)
     return accuracy
 
-if __name__ == "__main__":
+def main():
     X_train, X_test, y_train, y_test = load_data()
     model = train_model(X_train, y_train)
     accuracy = evaluate_model(model, X_test, y_test)
     print(f"Model accuracy: {accuracy}")
+
+# it will run only if this script is called directly, not when imported as a module
+if __name__ == "__main__":
+    main()

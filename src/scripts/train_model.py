@@ -2,7 +2,7 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from ml_proj.models.logistic_regression import create_model
+from src.models.logistic_regression import create_model
 
 def load_data():
     data = load_iris()

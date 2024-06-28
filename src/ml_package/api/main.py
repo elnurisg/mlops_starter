@@ -2,7 +2,7 @@ import os
 import sys
 from typing import List
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, conlist
 from src.ml_package.models.logistic_regression import load_model
 
 # Add the src directory to the sys.path
@@ -20,8 +20,8 @@ async def startup_event():
 
 # Define the request body model
 class PredictRequest(BaseModel):
-    data: List[float]
-
+    data: conlist(float, min_length=4, max_length=4)
+    
 @app.post("/predict")
 async def predict(request: PredictRequest):
     if not model:

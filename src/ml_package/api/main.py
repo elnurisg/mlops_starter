@@ -9,7 +9,7 @@ from src.ml_package.models.logistic_regression import load_model
 app = FastAPI()
 
 # Loading the model on startup would help in avoiding the overhead of loading the model for every request
-@app.on_event("startup")
+@app.on_event("startup") # Loading the file is I/O-bound. Hence, we use async
 async def startup_event():
     global model
     model = load_model()
@@ -20,13 +20,13 @@ async def startup_event():
 class PredictRequest(BaseModel):
     data: conlist(float, min_length=4, max_length=4)
     
-@app.post("/predict")
-async def predict(request: PredictRequest):
+@app.post("/predict") # Model inference is a CPU-bound operation.
+def predict(request: PredictRequest):
     if not model:
         raise HTTPException(status_code=500, detail="Model is not loaded")
     prediction = model.predict([request.data])
     return {"prediction": prediction.tolist()}
 
 @app.get("/")
-async def read_root():
+def read_root():
     return {"message": "Welcome to the MLOps starter API!"}

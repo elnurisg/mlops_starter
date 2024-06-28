@@ -2,7 +2,7 @@
 from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from src.ml_package.models.logistic_regression import create_model
+from src.ml_package.models.logistic_regression import create_model, save_model
 
 def load_data():
     data = load_iris()
@@ -14,6 +14,7 @@ def load_data():
 def train_model(X_train, y_train):
     model = create_model()
     model.fit(X_train, y_train)
+    save_model(model)
     return model
 
 def evaluate_model(model, X_test, y_test):

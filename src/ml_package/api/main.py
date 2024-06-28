@@ -5,12 +5,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, conlist
 from src.ml_package.models.logistic_regression import load_model
 
-# Add the src directory to the sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 app = FastAPI()
 
-# Load the model at startup
+# Loading the model on startup would help in avoiding the overhead of loading the model for every request
 @app.on_event("startup")
 async def startup_event():
     global model
@@ -18,7 +16,7 @@ async def startup_event():
     if model is None:
         raise HTTPException(status_code=500, detail="Model not found")
 
-# Define the request body model
+# Defining the request body corresponding the data
 class PredictRequest(BaseModel):
     data: conlist(float, min_length=4, max_length=4)
     

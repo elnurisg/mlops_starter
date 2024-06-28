@@ -3,3 +3,8 @@ venv/
 
 # Dynamic-link library files
 __pycache__/
+
+mlops_starter.egg-info/
+
+# saved models with pickle
+src/ml_package/models/*.pkl

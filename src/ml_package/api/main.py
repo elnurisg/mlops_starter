@@ -1,20 +1,28 @@
 import os
 import sys
+import logging
 from typing import List
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, conlist
+from contextlib import asynccontextmanager
+
 from src.ml_package.models.logistic_regression import load_model
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
+model = None
 
 # Loading the model on startup would help in avoiding the overhead of loading the model for every request
-@app.on_event("startup") # Loading the file is I/O-bound. Hence, we use async
-async def startup_event():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     global model
     model = load_model()
     if model is None:
         raise HTTPException(status_code=500, detail="Model not found")
+
+app = FastAPI(lifespan=lifespan)
 
 # Defining the request body corresponding the data
 class PredictRequest(BaseModel):

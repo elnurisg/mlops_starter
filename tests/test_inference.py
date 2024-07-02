@@ -17,7 +17,7 @@ def test_inference_correct_input():
     assert response.status_code == 200
     result = response.json()
     assert "prediction" in result
-    assert isinstance(result["prediction"], int)
+    assert isinstance(result["prediction"][0], int)
 
 def test_inference_incorrect_input():
     payload = {
